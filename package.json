@@ -1,0 +1,31 @@
+{
+  "name": "vue-node-express-tech",
+  "version": "1.0.0",
+  "description": "a tech of node express and vue",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=development webpack --config webpack.config.js"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "vue"
+  ],
+  "author": "ss",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.4",
+    "vue": "^2.6.10",
+    "webpack": "^4.30.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "file-loader": "^3.0.1",
+    "url-loader": "^1.1.2",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack-cli": "^3.3.2"
+  }
+}
