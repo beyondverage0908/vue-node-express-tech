@@ -1,9 +1,11 @@
 const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const HtmlPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
-console.log(process.env.NODE_ENV, isDev);
+console.log(`current env is dev ${isDev}`);
 
 const config = {
   target: 'web',
@@ -21,6 +23,10 @@ const config = {
         loader: 'vue-loader'
       },
       {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
         test: /\.(gif|jpe?g|png|svg)$/,
         use: [
           {
@@ -35,15 +41,30 @@ const config = {
     ]
   },
   plugins: [
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new HtmlPlugin()
   ]
 }
 
 if (isDev) {
   config.mode = 'development';
+  config.devtool = '#cheap-module-eval-source-map';
+  config.devServer = {
+    contentBase: path.join(__dirname, 'dist'),
+    port: 9001,
+    compress: true,
+    overlay: {
+      errors: true
+    },
+    open: true,
+    hot: true
+  };
+  config.plugins.push(
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
+  )
 } else {
   config.mode = 'production';
 }
-
 
 module.exports = config;
