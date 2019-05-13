@@ -19,6 +19,12 @@
       <div class="gutter">
         <a href="#" @click="getUserInfoDynamicCORS">演示三（动态的CORS）</a>
       </div>
+      <div class="gutter">
+        <a href="#" @click="putUser">非简单请求演示Put</a>
+      </div>
+      <div class="gutter">
+        <a href="#" @click="postUser">非简单请求演示POST</a>
+      </div>
     </div>
     <div style="margin-top: 25px;">
       {{res}}
@@ -26,7 +32,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
 import jsonp from 'jsonp'
 export default {
   name: 'app',
@@ -47,20 +52,30 @@ export default {
       })
     },
     getUser2() {
-      axios.get('http://127.0.0.1:3000/user').then(res => {
+      this.axios.get('/user').then(res => {
         console.log(res.data);
         this.res = res.data;
       })
     },
     getUser3() {
-      axios.get('http://127.0.0.1:3000/userinfo').then(res => {
+      this.axios.get('/userinfo').then(res => {
         console.log(res.data);
         this.res = res.data;
       })
     },
     getUserInfoDynamicCORS() {
-      axios.get('http://127.0.0.1:3000/jsonp').then(res => {});
+      this.axios.get('/jsonp').then(res => {});
     },
+    putUser() {
+      this.axios.put('/user', {userId: 100}).then(res => {
+        this.res = res.data;
+      })
+    },
+    postUser() {
+      this.axios.post('/user/add', {name: '小李子', age: 18}).then(res => {
+        this.res = res.data;
+      });
+    }
   }
 }
 </script>

@@ -1,8 +1,14 @@
 const express = require('express')
 const app = express()
 const path = require('path');
+const bodyParser = require('body-parser');
 
 app.use('/static', express.static('public'))
+
+//此项必须在 bodyParser.json 下面,为参数编码
+// app.use(bodyParser.urlencoded({
+//   extended: true
+// }));
 
 app.get('/', function (req, res) {
   // res.send('Hello world!');
@@ -12,11 +18,11 @@ app.get('/', function (req, res) {
   // res.sendFile('404.html', {root: path.join(__dirname, '../views')});
 });
 
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // 使用josnp发送get请求
 app.get('/jsonp', (req, res) => {
@@ -55,6 +61,30 @@ app.get('/userinfo', function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "*");
   res.json(user)
+});
+
+app.put('user', (req, res) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:9001");
+  res.header("Access-Control-Allow-Methods", "PUT");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  console.log(req.path)
+  console.log(req.body);
+});
+
+app.post('/user/add', (req, res) => {
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Methods", "*");
+  // res.header("Access-Control-Allow-Headers", "Content-Type");
+  let data = "";
+  req.on('data', function(chunk) {
+    data += chunk;
+  })
+  req.on('end', function() {
+    data = JSON.parse(data);
+  })
+  const user = req.body;
+  console.log(data);
+  res.json(user);
 });
 
 app.listen(3000, function () {
