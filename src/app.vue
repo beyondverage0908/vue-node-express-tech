@@ -4,26 +4,38 @@
 			<h2>{{title}}</h2>
 		</div>
 		<div>
-			<img src="http://127.0.0.1:3000/static/images/angular.png" alt>
+			<p>
+				<a href="#">使用"disable-security启动浏览器解决跨域问题</a>
+			</p>
 		</div>
+		---------
 		<div>
 			<div class="gutter">
-				<a href="#" @click="getUserByJsonp">演示一(使用jsonp发起请求)</a>
+				<a href="#" @click="getUserByJsonp">使用jsonp解决跨域问题</a>
+			</div>
+			------
+			<div class="gutter">
+				<a href="#" @click="getInfoByAll">CORS*解决跨域</a>
 			</div>
 			<div class="gutter">
-				<a href="#" @click="getUser2">演示二(设置CORS指定域和方法))</a>
+				<a href="#" @click="getInfoByTarget">这特定的域可以访问</a>
 			</div>
 			<div class="gutter">
-				<a href="#" @click="getUser3">演示三(CORS*)</a>
+				<a href="#" @click="getUserInfoDynamicCORS">动态的获取调用方的源进行判断是否支持跨域</a>
+			</div>
+			---------
+			<div class="gutter">
+				<a href="#" @click="simplePost">简单请求Post演示</a>
 			</div>
 			<div class="gutter">
-				<a href="#" @click="getUserInfoDynamicCORS">演示三（动态的CORS）</a>
+				<a href="#" @click="complexPost">非简单请求演示POST</a>
 			</div>
+			-----------
 			<div class="gutter">
-				<a href="#" @click="putUser">非简单请求演示Put</a>
+				<a href="#">基于调用方的代理解决跨域问题(代理)</a>
 			</div>
-			<div class="gutter">
-				<a href="#" @click="postUser">非简单请求演示POST</a>
+			<div>
+				<a href="#">基于被调用的代理解决跨域问题(反向代理)</a>
 			</div>
 		</div>
 		<div style="margin-top: 25px;">{{res}}</div>
@@ -47,30 +59,35 @@ export default {
 				console.log(res);
 			});
 		},
-		getUser2() {
-			this.axios.get("/user").then(res => {
+
+		/*********** 设置响应头解决跨域问题 **************/
+
+		getInfoByAll() {
+			this.axios.get("/all/info").then(res => {
 				console.log(res.data);
 				this.res = res.data;
 			});
 		},
-		getUser3() {
-			this.axios.get("/userinfo").then(res => {
+		getInfoByTarget() {
+			this.axios.get("/target/info").then(res => {
 				console.log(res.data);
 				this.res = res.data;
 			});
 		},
 		getUserInfoDynamicCORS() {
-			this.axios.post("/dynamic/userinfo", { desc: "dynamic user info" }).then(res => {
+			this.axios.get("/dynamic/info?info=动态的设置来源用于解决跨域问题").then(res => {
 				this.res = res.data;
 			});
 		},
-		putUser() {
-			this.axios.put("/user", { userId: 100 }).then(res => {
+
+		/*******简单请求和非简单请求***********/
+		simplePost() {
+			this.axios.post("/simple/info?name=jack&info=这是一个简单请求来自于中山陵", { userId: 100 }).then(res => {
 				this.res = res.data;
 			});
 		},
-		postUser() {
-			this.axios.post("/user/add", { name: "小李子", age: 18 }).then(res => {
+		complexPost() {
+			this.axios.post("/complex/info", { name: "Steve", info: '这是一个非简单请求来自于明孝陵' }).then(res => {
 				this.res = res.data;
 			});
 		}
