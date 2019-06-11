@@ -1,97 +1,136 @@
 <template>
-    <div style="text-align: center">
-        <div>
-            <!-- <h2>{{title}}</h2> -->
-        </div>
-        <div>
-            <img src="http://127.0.0.1:3000/static/images/angular.png" alt>
-        </div>
-        <div>
-            <div class="gutter">
-                <a href="#" @click="getUserByJsonp">演示一(使用jsonp发起请求)</a>
-            </div>
-            <div class="gutter">
-                <a href="#" @click="getUser2">演示二(设置CORS指定域和方法))</a>
-            </div>
-            <div class="gutter">
-                <a href="#" @click="getUser3">演示三(CORS*)</a>
-            </div>
-            <div class="gutter">
-                <a href="#" @click="getUserInfoDynamicCORS">演示三（动态的CORS）</a>
-            </div>
-            <div class="gutter">
-                <a href="#" @click="simplePost">简单请求演示Post</a>
-            </div>
-            <div class="gutter">
-                <a href="#" @click="putUser">非简单请求演示Put</a> |
-                <a href="#" @click="postUser">非简单请求演示POST</a>
-            </div>
-        </div>
-        <div style="margin-top: 25px;">{{res}}</div>
-    </div>
+	<div style="text-align: center">
+		<div>
+			<h2>{{title}}</h2>
+		</div>
+		<div>
+			<p>
+				<a href="#">使用"disable-security启动浏览器解决跨域问题</a>
+			</p>
+		</div>
+		---------
+		<div>
+			<div class="gutter">
+				<a href="#" @click="getUserByJsonp">使用jsonp解决跨域问题</a>
+			</div>
+			------
+			<div class="gutter">
+				<a href="#" @click="getInfoByAll">CORS*解决跨域</a>
+			</div>
+			<div class="gutter">
+				<a href="#" @click="getInfoByTarget">这特定的域可以访问</a>
+			</div>
+			<div class="gutter">
+				<a href="#" @click="getUserInfoDynamicCORS">动态的获取调用方的源进行判断是否支持跨域</a>
+			</div>
+			---------
+			<div class="gutter">
+				<a href="#" @click="simplePost">简单请求Post演示</a>
+			</div>
+			<div class="gutter">
+				<a href="#" @click="complexPostofJson">非简单请求演示POST - 发送json格式的ajax请求</a>
+			</div>
+			<div>
+				<a href="#" @click="onComplexPostofHeader">非简单请求演示POST - 带有自定义头的ajax请求</a>
+			</div>
+			-----------
+			<div class="gutter">
+				<a href="#" @click="onProxy">基于调用方的代理解决跨域问题(代理)</a>
+			</div>
+			<div>
+				<a href="#" @click="onReverseProxy">基于被调用的代理解决跨域问题(反向代理)</a>
+			</div>
+		</div>
+		<div style="margin-top: 25px;">{{res}}</div>
+	</div>
 </template>
 <script>
 import jsonp from "jsonp";
 export default {
-    name: "app",
-    data() {
-        return {
-            title: "这里是演示跨域的演示项目",
-            res: ""
-        };
-    },
-    mounted() {},
-    methods: {
-        getUserByJsonp() {
-            jsonp("http://127.0.0.1:3000/jsonp", null, (err, res) => {
-                this.res = res;
-                console.log(res);
-            });
-        },
-        getUser2() {
-            this.axios.get("/user").then(res => {
-                console.log(res.data);
-                this.res = res.data;
-            });
-        },
-        getUser3() {
-            this.axios.get("/userinfo").then(res => {
-                console.log(res.data);
-                this.res = res.data;
-            });
-        },
-        getUserInfoDynamicCORS() {
-            this.axios.get("/userinfo/1").then(res => {
+	name: "app",
+	data() {
+		return {
+			title: "这里是演示跨域的演示项目",
+			res: ""
+		};
+	},
+	mounted() {},
+	methods: {
+		getUserByJsonp() {
+			jsonp("http://127.0.0.1:3000/jsonp", null, (err, res) => {
+				this.res = res;
+				console.log(res);
+			});
+		},
+
+		/*********** 设置响应头解决跨域问题 **************/
+
+		getInfoByAll() {
+			this.axios.get("/all/info").then(res => {
+				console.log(res.data);
 				this.res = res.data;
 			});
-        },
+		},
+		getInfoByTarget() {
+			this.axios.get("/target/info").then(res => {
+				console.log(res.data);
+				this.res = res.data;
+			});
+		},
+		getUserInfoDynamicCORS() {
+			this.axios.get("/dynamic/info?info=动态的设置来源用于解决跨域问题").then(res => {
+				this.res = res.data;
+			});
+		},
 
-        // 简单请求演示区域
-        simplePost() {
-			this.axios.post("/simple/post?des=simple post request").then(res => {
+		/*******简单请求和非简单请求***********/
+		simplePost() {
+			this.axios.post("/simple/info?name=jack&info=simple").then(res => {
+				this.res = res.data;
+			});
+		},
+		complexPostofJson() {
+			this.axios.post("/complex/info", { name: "Steve", info: 'this is request of complex' }).then(res => {
+				this.res = res.data;
+			});
+		},
+		onComplexPostofHeader() {
+			this.axios.post('/complex/header/info', {
+				name: 'LPJ',
+					weight: '67kg'
+			}, {
+				headers: {
+					'X-Header-1': 'lpj',
+					'X-Header-2': 'lpj2'
+				}
+			}).then(res => {
 				this.res = res.data;
 			})
 		},
-		simpleHeader() {
-			this.axios.header("/simple/header")
-		},
 
-        putUser() {
-            this.axios.put("/user", { userId: 100 }).then(res => {
-                this.res = res.data;
-            });
-        },
-        postUser() {
-            this.axios.post("/user/add", { name: "小李子", age: 18 }).then(res => {
+		/********代理和反向代理***********/
+		onProxy() {
+			this.axios.get('/api/tech/proxy/info', { params: { name: 'proxy_jack', info: '代理请求'}}).then(res => {
+				console.log(res);
 				this.res = res.data;
 			});
-        }
-    }
+
+			// this.axios.post('/api/proxy/info', { name: 'proxy_jack', info: '代理请求'}).then(res => {
+			// 	console.log(res);
+			// 	this.res = res.data;
+			// });
+		},
+		onReverseProxy() {
+			this.axios.post('/api/reserse/proxy/info', { name: 'proxy_jack', info: '反向代理请求'}).then(res => {
+				this.res = res.data;
+			});
+		}
+	}
 };
 </script>
 <style>
 .gutter {
-    margin: 20px 0;
+	margin: 20px 0;
 }
 </style>
 

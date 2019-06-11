@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import App from './app.vue'
-import './asset/react.png'
+// import './asset/react.png'
 import Axios from 'axios';
 
-Axios.defaults.baseURL = 'http://127.0.0.1:3000';
+// Axios.defaults.baseURL = 'http://localhost:3000/test';
+// Axios.defaults.baseURL = 'http://a.com:9000/test';
+Axios.defaults.baseURL = '/apis';
 Vue.prototype.axios = Axios;
 
 const root = document.createElement('div')

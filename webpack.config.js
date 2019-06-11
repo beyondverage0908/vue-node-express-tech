@@ -51,17 +51,21 @@ if (isDev) {
   config.devtool = '#cheap-module-eval-source-map';
   config.devServer = {
     contentBase: path.join(__dirname, 'dist'),
-    port: 9001,
+    port: 8999,
     compress: true,
     overlay: {
       errors: true
     },
     open: true,
-    hot: true
+	hot: true,
+	// proxy: {
+	// 	'/api': 'http://localhost:3000',
+	// 	changeOrigin: true
+	// }
   };
   config.plugins.push(
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    // new webpack.HotModuleReplacementPlugin(),
+    // new webpack.NoEmitOnErrorsPlugin()
   )
 } else {
   config.mode = 'production';
