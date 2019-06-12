@@ -30,3 +30,18 @@ Content-Type为一下几种
 -------------------------------
 
 预检命令是可以缓存的，通过设置相应头中的`Access-Controller-Max-Age`，表示对预检命令缓存的时间周期，在这一段时间内，非简单请求即将不在发出预检命令。你可以通过在浏览器的inspect中`disable-cache`清除缓存
+
+
+
+-------------------------------
+
+nginx命令
+
+打开 nginx
+sudo nginx
+
+nginx  重新加载配置|重启|停止|退出
+nginx -s reload|reopen|stop|quit
+
+测试配置是否有语法错误
+nginx -t

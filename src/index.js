@@ -4,7 +4,7 @@ import App from './app.vue'
 import Axios from 'axios';
 
 Axios.defaults.baseURL = 'http://localhost:3000/test';
-// Axios.defaults.baseURL = 'http://a.com:9000/test';
+// Axios.defaults.baseURL = 'http://b.com:9000/test';
 // Axios.defaults.baseURL = '/apis';
 Axios.defaults.withCredentials = true;
 Vue.prototype.axios = Axios;

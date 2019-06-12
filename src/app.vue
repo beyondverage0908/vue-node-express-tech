@@ -18,9 +18,6 @@
 				<a href="#" @click="getInfoByAll">CORS*解决跨域</a>
 			</div>
 			<div class="gutter">
-				<a href="#" @click="getInfoByTarget">这特定的域可以访问</a>
-			</div>
-			<div class="gutter">
 				<a href="#" @click="getUserInfoDynamicCORS">动态的获取调用方的源进行判断是否支持跨域</a>
 			</div>
 			---------
@@ -63,7 +60,6 @@ export default {
 		getUserByJsonp() {
 			jsonp("http://127.0.0.1:3000/jsonp", null, (err, res) => {
 				this.res = res;
-				console.log(res);
 			});
 		},
 
@@ -106,10 +102,7 @@ export default {
 			});
 		},
 		onComplexPostofHeader() {
-			this.axios.post('/complex/header/info', {
-				name: 'LPJ',
-					weight: '67kg'
-			}, {
+			this.axios.post('/complex/header/info', null, {
 				headers: {
 					'X-Header-1': 'lpj',
 					'X-Header-2': 'lpj2'
