@@ -25,6 +25,10 @@
 			</div>
 			---------
 			<div class="gutter">
+				<a href="#" @click="getCookies">跨域支持cookie</a>
+			</div>
+			---------
+			<div class="gutter">
 				<a href="#" @click="simplePost">简单请求Post演示</a>
 			</div>
 			<div class="gutter">
@@ -79,6 +83,13 @@ export default {
 		},
 		getUserInfoDynamicCORS() {
 			this.axios.get("/dynamic/info?info=动态的设置来源用于解决跨域问题").then(res => {
+				this.res = res.data;
+			});
+		},
+
+		/*******跨域支持Cookie***********/
+		getCookies() {
+			this.axios.get('/cookie').then(res => {
 				this.res = res.data;
 			});
 		},

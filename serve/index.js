@@ -2,9 +2,12 @@ const express = require('express')
 const app = express()
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 // 中间件区域
 app.use('/static', express.static('public'))
+// cookie解析
+app.use(cookieParser());
 
 // 中间件，为所有请求设置跨域通配
 app.use(function (req, res, next) {
@@ -28,6 +31,10 @@ app.use(function (req, res, next) {
 
 	// res.header("Access-Control-Allow-Headers", "Content-Type, X-Header-1, X-Header-2"); // 设置响应头
 	// res.header("Access-Control-Max-Age", "3600"); // 用户缓存预检命令
+
+	// 跨域支持cookie
+	// res.header('Access-Control-Allow-Origin', req.headers.origin);
+	// res.header('Access-Control-Allow-Credentials', true);
 	next();
 });
 
@@ -79,6 +86,12 @@ app.get('/test/dynamic/info', (req, res) => {
 	res.json(data);
 })
 
+/**************跨域支持Cookies **************************/
+
+app.get('/test/cookie', (req, res) => {
+	console.log('Cookies:', req.cookies);
+	res.json(req.cookies);
+});
 
 /*************简单请求和非简单请求******************/
 
