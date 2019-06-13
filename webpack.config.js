@@ -52,7 +52,8 @@ if (isDev) {
   config.devServer = {
     contentBase: path.join(__dirname, 'dist'),
     port: 8999,
-    compress: true,
+	compress: true,
+	disableHostCheck: true,
     overlay: {
       errors: true
     },

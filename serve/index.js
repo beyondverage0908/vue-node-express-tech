@@ -57,7 +57,11 @@ app.get('/jsonp', (req, res) => {
 	}
 	// res.header('Content-type','application/json');
 	// res.header('Charset','utf8');
-	res.jsonp(info);
+	console.log(req.query);
+
+	setTimeout(() => {
+		res.jsonp(info);
+	}, 5000)
 })
 
 // ------------通过设置response header中Access-Control-Allow-Origin---允许跨域请求

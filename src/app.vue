@@ -58,7 +58,7 @@ export default {
 	mounted() {},
 	methods: {
 		getUserByJsonp() {
-			jsonp("http://127.0.0.1:3000/jsonp", null, (err, res) => {
+			jsonp("http://127.0.0.1:3000/jsonp?name=jsonp", {timeout: 10000}, (err, res) => {
 				this.res = res;
 			});
 		},
