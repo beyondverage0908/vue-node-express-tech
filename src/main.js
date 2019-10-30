@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import router from './router'
 import App from './app.vue'
 // import './asset/react.png'
 import Axios from 'axios';
@@ -12,6 +13,8 @@ Vue.prototype.axios = Axios;
 const root = document.createElement('div')
 document.body.appendChild(root)
 
+
 new Vue({
-  render: (h) => h(App)
+	router,
+	render: (h) => h(App)
 }).$mount(root)

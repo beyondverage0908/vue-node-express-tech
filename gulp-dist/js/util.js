@@ -1,0 +1,1 @@
+var e={PI:3.1415926,addStep:function(e,r){return e+r}};module.exports=e;

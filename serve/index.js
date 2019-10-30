@@ -133,6 +133,102 @@ app.post('/test/api/reserse/proxy/info', (req, res) => {
 })
 
 
+
+// 
+
+app.get('/cqa/api/user/cur-info', (req, res) => {
+	const info = {
+		code: 200,
+		data: {
+			userName: '李小华',
+			duration: 123,
+			loveNum: 5,
+			starLevel: 34,
+			topStarLevel: 38,
+			uid: 1111,
+			userAlias: '胡铁花',
+			userAvatar: 'https://avatar-static.segmentfault.com/207/487/2074876616-5bee3cd5ba16c_huge256'
+		},
+		success: true,
+		message: '成功'
+	}
+	res.json(info);
+})
+
+app.get('/cqa/api/user-love/get', (req, res) => {
+	const info = {
+		code: 200,
+		data: true,
+		message: '领取失败，您已有爱心或段位',
+		success: true
+	}
+	res.json(info);
+})
+
+app.post('/cqa/api/quiz/', (req, res) => {
+	let info = {
+		code: 601,
+		message: '您的爱心不够，请领取爱心',
+		success: false,
+		data: {
+			flag: true,
+			total: 10,
+			timeLimit: 10
+		}
+	}
+	res.json(info);
+})
+
+app.post('/cqa/api/quiz/answer', (req, res) => {
+	const body = req.body;
+	const info = {
+		code: 200
+	}
+	const rightIndex = new Date().getTime() % 3 + 1;
+	console.log(body, rightIndex);
+	if (body.answerIndex == rightIndex) {
+		info.message = '成功';
+		info.success = true;
+		info.data = {
+			correct: true,
+			quizContinue: true,
+			quizSuccess: false,
+			remark: 'xxxx',
+			rightIndex: 1
+		}
+	} else {
+		info.message = '失败';
+		info.success = true;
+		info.data = {
+			correct: false,
+			quizContinue: true,
+			quizSuccess: false,
+			remark: 'xxxx',
+			rightIndex: 4
+		}
+	}
+	if (body.currentIndex === 3) {
+		info.data.quizContinue = false;
+		info.data.quizSuccess = true;
+	}
+	res.json(info);
+})
+
+app.get('/cqa/api/quiz/question', (req, res) => {
+	let t = new Date().getTime();
+	const info = {
+		code: 200,
+		data: {
+			questionTitle: '中国的诗仙是谁？',
+			answers: ['李白' + t, '王维' + t, '杜牧' + t, '杜甫' + t],
+			questionId: new Date().getTime() % 3 + 1
+		},
+		success: true
+	}
+	res.json(info);
+})
+
+
 /*************端口监听 */
 
 app.listen(3000, function () {
